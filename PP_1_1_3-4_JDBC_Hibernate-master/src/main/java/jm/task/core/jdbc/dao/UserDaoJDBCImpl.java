@@ -7,11 +7,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jm.task.core.jdbc.util.Util.getConnection;
+//import static jm.task.core.jdbc.util.Util.getConnection;
 
-public class UserDaoJDBCImpl implements UserDao {
+//public class UserDaoJDBCImpl implements UserDao {
 
-    public UserDaoJDBCImpl() {
+    /*public UserDaoJDBCImpl() {
 
     }
 
@@ -115,5 +115,5 @@ public class UserDaoJDBCImpl implements UserDao {
     private User makeUser(ResultSet result) throws SQLException {
         return new User(result.getString(1), result.getString(2),
                 result.getByte(3));
-    }
-}
+    }*/
+
