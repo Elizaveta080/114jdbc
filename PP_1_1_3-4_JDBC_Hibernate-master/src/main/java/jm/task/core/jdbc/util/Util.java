@@ -14,16 +14,22 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Util {
+    private static final String driver = "com.mysql.cj.jdbc.Driver";
+    private static final String url = "jdbc:mysql://localhost:3306/userabc";
+    private static final String username = "root";
+    private static final String password = "Password";
+
     private static SessionFactory sessionFactory;
+
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
                 Configuration configuration = new Configuration();
                 Properties settings = new Properties();
-                settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/userabc");
-                settings.put(Environment.USER, "root");
-                settings.put(Environment.PASS, "Password");
+                settings.put(Environment.DRIVER, driver);
+                settings.put(Environment.URL, url);
+                settings.put(Environment.USER, username);
+                settings.put(Environment.PASS, password);
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
 
                 settings.put(Environment.SHOW_SQL, "true");
@@ -46,10 +52,8 @@ public class Util {
         }
         return sessionFactory;
     }
-/*    public static Connection getConnection() throws SQLException, IOException {
-        String url = "jdbc:mysql://localhost:3306/userabc";
-        String username = "root";
-        String password = "Password";
-        return (Connection) DriverManager.getConnection(url, username, password);
-    }*/
+
+    public static Connection getConnection() throws SQLException, IOException {
+        return DriverManager.getConnection(url, username, password);
+    }
 }

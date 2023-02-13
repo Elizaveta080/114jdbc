@@ -7,11 +7,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//import static jm.task.core.jdbc.util.Util.getConnection;
+import static jm.task.core.jdbc.util.Util.getConnection;
 
-//public class UserDaoJDBCImpl implements UserDao {
 
-    /*public UserDaoJDBCImpl() {
+public class UserDaoJDBCImpl implements UserDao {
+
+
+    public UserDaoJDBCImpl() {
 
     }
 
@@ -23,12 +25,11 @@ import java.util.List;
                         "id INT PRIMARY KEY NOT NULL AUTO_INCREMENT",
                         "name VARCHAR(255)",
                         "lastName VARCHAR(255)",
-                        "age INT");
+                        "age INT"
+                );
                 statement.execute(sql);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -39,64 +40,47 @@ import java.util.List;
                 String sql = "DROP TABLE IF EXISTS users;";
                 statement.execute(sql);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public void saveUser(String name, String lastName, byte age) {
         try (Connection connection = getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO users(name, lastName, age) VALUES(?, ?, ?)")
-            ) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(name, lastName, age) VALUES(?, ?, ?);")) {
                 preparedStatement.setString(1, name);
                 preparedStatement.setString(2, lastName);
                 preparedStatement.setByte(3, age);
                 preparedStatement.executeUpdate();
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public void removeUserById(long id) {
         try (Connection connection = getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(
-                    "DELETE FROM users WHERE id = (?)")) {
+            try(PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users WHERE id = (?)")) {
                 preparedStatement.setLong(1, id);
                 preparedStatement.executeUpdate();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         try (PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT name, lastName, age FROM users;")) {
             try (ResultSet result = preparedStatement.executeQuery()) {
                 while (result.next()) {
-                    users.add(makeUser(result));
+                    User user = new User(result.getString(1), result.getString(2), result.getByte(3));
+                    users.add(user);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        } catch (SQLException se) {
-            se.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
         }
-
         return users;
     }
 
@@ -110,10 +94,4 @@ import java.util.List;
             throw new RuntimeException(e);
         }
     }
-
-
-    private User makeUser(ResultSet result) throws SQLException {
-        return new User(result.getString(1), result.getString(2),
-                result.getByte(3));
-    }*/
-
+}
